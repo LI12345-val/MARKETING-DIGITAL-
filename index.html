@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Castel TV - Internet y Cable</title>
+    <style>
+        :root {
+            --primary-blue: #0D47A1;
+            --secondary-blue: #1976D2;
+            --cta-color: #FF6D00;
+            --cta-hover: #E65C00;
+            --bg-light: #F4F6F9;
+            --text-dark: #2C3E50;
+            --text-light: #7F8C8D;
+            --white: #FFFFFF;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            color: var(--text-dark);
+            background-color: var(--bg-light);
+            line-height: 1.6;
+        }
+
+        a { text-decoration: none; }
+        ul { list-style: none; }
+
+        /* --- Header & Navegación --- */
+        .sticky-header {
+            position: sticky;
+            top: 0;
+            background-color: var(--primary-blue);
+            color: var(--white);
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            height: 80px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            flex: 1;
+        }
+
+        .nav-links.left { justify-content: flex-end; padding-right: 40px; }
+        .nav-links.right { justify-content: flex-start; padding-left: 40px; }
+
+        .nav-links a {
+            color: var(--white);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover { color: var(--cta-color); }
+
+        .logo-container {
+            flex-shrink: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .logo-container img {
+            height: 80px;
+            width: auto;
+        }
+
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 5px;
+        }
+
+        .menu-toggle span {
+            width: 30px;
+            height: 3px;
+            background-color: var(--white);
+            border-radius: 2px;
+        }
+
+        /* --- Hero Section --- */
+        .hero {
+            background: linear-gradient(
+            rgba(0, 0, 0, 0.55), 
+            rgba(0, 0, 0, 0.55)), url('https://i.pinimg.com/1200x/07/4c/5f/074c5f0790e70d79ca03e27c14c6393f.jpg') center/cover;
+            height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: var(--white);
+            padding: 0 20px;
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            font-weight: 800;
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .btn-cta {
+            background-color: var(--cta-color);
+            color: var(--white);
+            padding: 15px 40px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 30px;
+            display: inline-block;
+            transition: background-color 0.3s, transform 0.2s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-cta:hover {
+            background-color: var(--cta-hover);
+            transform: translateY(-2px);
+        }
+
+        /* --- Secciones Generales --- */
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            color: var(--primary-blue);
+            margin-bottom: 40px;
+        }
+
+        section { padding: 80px 20px; }
+        .container { max-width: 1200px; margin: 0 auto; }
+
+        /* --- Planes & Carrusel --- */
+        .planes-toggle {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .planes-toggle button {
+            padding: 10px 25px;
+            border: 2px solid var(--primary-blue);
+            background: transparent;
+            color: var(--primary-blue);
+            font-weight: bold;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .planes-toggle button.active, .planes-toggle button:hover {
+            background: var(--primary-blue);
+            color: var(--white);
+        }
+
+        /* Estructura del Carrusel */
+        .carousel-wrapper {
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 10px 40px;
+        }
+
+        .carousel-container {
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .planes-track {
+            display: flex;
+            gap: 30px;
+            transition: transform 0.4s ease-in-out;
+            padding: 15px 5px;
+        }
+
+        .plan-card {
+            flex: 0 0 calc(33.333% - 20px);
+            background: var(--white);
+            border-radius: 15px;
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            transition: transform 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .plan-card:hover { transform: translateY(-10px); }
+
+        .plan-card.popular {
+            border: 2px solid var(--cta-color);
+        }
+
+        .popular-badge {
+            position: absolute;
+            top: 20px;
+            right: -35px;
+            background: var(--cta-color);
+            color: white;
+            padding: 5px 40px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            transform: rotate(45deg);
+        }
+
+        .plan-title { font-size: 1.5rem; margin-bottom: 15px; color: var(--primary-blue); }
+        .plan-price { font-size: 3rem; font-weight: 800; color: var(--text-dark); margin-bottom: 20px; }
+        .plan-price span { font-size: 1rem; font-weight: normal; color: var(--text-light); }
+        .plan-features { margin-bottom: 30px; text-align: left; }
+        .plan-features li { padding: 10px 0; border-bottom: 1px solid #EEE; display: flex; align-items: center; gap: 10px; }
+        .plan-features li::before { content: '✓'; color: var(--cta-color); font-weight: bold; }
+
+        /* Botones del Carrusel */
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 45px;
+            height: 45px;
+            background-color: var(--primary-blue);
+            color: var(--white);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            z-index: 10;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .carousel-btn:hover {
+            background-color: var(--cta-color);
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .carousel-btn.prev { left: -10px; }
+        .carousel-btn.next { right: -10px; }
+
+        /* Puntos indicadores del carrusel */
+        .carousel-dots {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 20px;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            background-color: #ccc;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .dot.active {
+            background-color: var(--primary-blue);
+            width: 25px;
+            border-radius: 10px;
+        }
+
+        /* --- Nosotros --- */
+        .nosotros-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            text-align: center;
+        }
+
+        .feature-box { background: var(--white); padding: 40px 20px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .feature-icon { font-size: 3rem; margin-bottom: 20px; }
+        .feature-box h3 { margin-bottom: 15px; color: var(--primary-blue); }
+        .coverage-notice { text-align: center; margin-top: 40px; font-weight: bold; font-size: 1.1rem; }
+
+        /* --- Contacto --- */
+        .contacto-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            background: var(--white);
+            padding: 50px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+        }
+
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: 600; }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem; outline: none;
+        }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--primary-blue); }
+        .btn-submit { width: 100%; border-radius: 8px; }
+
+        .contacto-info h3 { margin-bottom: 20px; color: var(--primary-blue); }
+        .contacto-info p { margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
+
+        /* --- Footer --- */
+        footer { background: #1A1A1A; color: #fff; padding: 60px 20px 20px; }
+        .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px; max-width: 1200px; margin: 0 auto; border-bottom: 1px solid #333; padding-bottom: 40px; }
+        .footer-col h4 { margin-bottom: 20px; color: var(--cta-color); }
+        .footer-col ul li { margin-bottom: 10px; }
+        .footer-col ul li a { color: #ccc; transition: color 0.3s; }
+        .footer-col ul li a:hover { color: white; }
+        .footer-bottom { text-align: center; padding-top: 20px; font-size: 0.9rem; color: #888; }
+
+        /* --- Botón Flotante WhatsApp --- */
+        .fab-whatsapp {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: #25D366;
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            z-index: 9999;
+            transition: transform 0.3s;
+        }
+        .fab-whatsapp:hover { transform: scale(1.1); }
+        .fab-whatsapp svg { width: 35px; height: 35px; fill: currentColor; }
+
+        /* --- Responsive --- */
+        @media (max-width: 992px) {
+            .plan-card { flex: 0 0 calc(50% - 15px); }
+        }
+
+        @media (max-width: 768px) {
+            .plan-card { flex: 0 0 100%; }
+            .carousel-wrapper { padding: 10px 20px; }
+            .carousel-btn.prev { left: -15px; }
+            .carousel-btn.next { right: -15px; }
+
+            .nav-links { display: none; width: 100%; flex-direction: column; padding: 20px 0; text-align: center; gap: 15px; }
+            .nav-links.active { display: flex; }
+            .nav-links.left, .nav-links.right { padding: 0; justify-content: center; }
+            .nav-container { flex-wrap: wrap; height: auto; min-height: 80px; padding: 10px 20px; }
+            .logo-container { order: 1; }
+            .menu-toggle { display: flex; order: 2; }
+            .nav-links.left { order: 3; }
+            .nav-links.right { order: 4; }
+            .hero-content h1 { font-size: 2.5rem; }
+            .contacto-wrapper { grid-template-columns: 1fr; padding: 30px; }
+        }
+        
+        .feature-icon img {
+            width: 250px; /* Ajusta el ancho según prefieras */
+            height: 250px; /* Ajusta la altura según prefieras */
+            object-fit: contain;
+            border-radius: 15px;
+            margin-bottom: 0px;
+         }
+        
+        
+        
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="sticky-header">
+        <nav class="nav-container">
+            <ul class="nav-links left" id="nav-left">
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#planes">Planes</a></li>
+            </ul>
+            <div class="logo-container">
+                <a href="#inicio"><img src="./assets/logocastel.png" alt="ConectaPlus Logo" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'150\' height=\'60\'><rect width=\'150\' height=\'60\' fill=\'none\'/><text x=\'50%\' y=\'50%\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'%23fff\' font-size=\'20\' font-family=\'sans-serif\' font-weight=\'bold\'>LOGO</text></svg>'"></a>
+            </div>
+            <div class="menu-toggle" onclick="toggleMenu()">
+                <span></span><span></span><span></span>
+            </div>
+            <ul class="nav-links right" id="nav-right">
+                <li><a href="#nosotros">Nosotros</a></li>
+                <li><a href="#contacto">Contáctanos</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Inicio (Hero) -->
+    <section id="inicio" class="hero">
+        <div class="hero-content">
+            <h1>Navega a la velocidad de tus sueños</h1>
+            <p>Fibra óptica simétrica y el mejor entretenimiento en TV por cable para toda tu familia. Sin cortes, sin límites.</p>
+            <a href="#planes" class="btn-cta">Consultar Cobertura</a>
+        </div>
+    </section>
+
+    <!-- Planes con Carrusel -->
+    <section id="planes" class="bg-light">
+        <div class="container">
+            <h2 class="section-title">Elige el plan ideal para ti</h2>
+            
+            <div class="planes-toggle">
+                <button class="active" onclick="filterPlans('all')">Todos</button>
+                <button onclick="filterPlans('internet')">Solo Internet</button>
+                <button onclick="filterPlans('cable')">Solo Cable</button>
+                <button onclick="filterPlans('duo')">Paquetes Dúo</button>
+            </div>
+
+            <div class="carousel-wrapper">
+                <button class="carousel-btn prev" onclick="moveCarousel(-1)">&#10094;</button>
+                <div class="carousel-container">
+                    <div class="planes-track" id="planesTrack">
+                        
+                        <!-- 1. Internet Básico -->
+                        <div class="plan-card" data-category="internet">
+                            <h3 class="plan-title">Internet Básico</h3>
+                            <div class="plan-price">S/50<span>/mes</span></div>
+                            <ul class="plan-features">
+                                <li>100 Mbps Velocidad Simétrica</li>
+                                <li>Router Wi-Fi 6 Incluido</li>
+                                <li>Soporte Técnico 24/7</li>
+                                <li>Ideal para Navegación Básica</li>
+                            </ul>
+                            <a href="#contacto" class="btn-cta" style="width: 100%;">Lo quiero</a>
+                        </div>
+
+                        <!-- 2. Internet Avanzado -->
+                        <div class="plan-card" data-category="internet">
+                            <h3 class="plan-title">Internet Pro</h3>
+                            <div class="plan-price">S/70<span>/mes</span></div>
+                            <ul class="plan-features">
+                                <li>200 Mbps Velocidad Simétrica</li>
+                                <li>Router Dual Band 5G</li>
+                                <li>Cero Latencia en Juegos</li>
+                                <li>Soporte Prioritario</li>
+                            </ul>
+                            <a href="#contacto" class="btn-cta" style="width: 100%;">Lo quiero</a>
+                        </div>
+
+                        <!-- 3. Dúo Popular -->
+                        <div class="plan-card popular" data-category="duo">
+                            <div class="popular-badge">El Más Popular</div>
+                            <h3 class="plan-title">Dúo Fibra + TV</h3>
+                            <div class="plan-price">S/90<span>/mes</span></div>
+                            <ul class="plan-features">
+                                <li>300 Mbps Velocidad Simétrica</li>
+                                <li>+120 Canales (50 en HD)</li>
+                                <li>Instalación Gratuita</li>
+                                <li>Router Wi-Fi 6 Incluido</li>
+                            </ul>
+                            <a href="#contacto" class="btn-cta" style="width: 100%;">Lo quiero</a>
+                        </div>
+
+                        <!-- 4. Dúo Premium -->
+                        <div class="plan-card" data-category="duo">
+                            <h3 class="plan-title">Dúo Pro Ultra</h3>
+                            <div class="plan-price">S/120<span>/mes</span></div>
+                            <ul class="plan-features">
+                                <li>500 Mbps Velocidad Simétrica</li>
+                                <li>+150 Canales (80 en HD)</li>
+                                <li>2 Decodificadores HD</li>
+                                <li>Pack HBO / Fox Incluido</li>
+                            </ul>
+                            <a href="#contacto" class="btn-cta" style="width: 100%;">Lo quiero</a>
+                        </div>
+
+                        <!-- 5. Cable Básico -->
+                        <div class="plan-card" data-category="cable">
+                            <h3 class="plan-title">Cable Familiar</h3>
+                            <div class="plan-price">S/35<span>/mes</span></div>
+                            <ul class="plan-features">
+                                <li>+80 Canales Nacionales e Int.</li>
+                                <li>Señal Digital Estable</li>
+                                <li>1 Decodificador HD</li>
+                            </ul>
+                            <a href="#contacto" class="btn-cta" style="width: 100%;">Lo quiero</a>
+                        </div>
+
+                        <!-- 6. Cable Premium -->
+                        <div class="plan-card" data-category="cable">
+                            <h3 class="plan-title">Cable Premium</h3>
+                            <div class="plan-price">S/45<span>/mes</span></div>
+                            <ul class="plan-features">
+                                <li>+150 Canales (80 en HD)</li>
+                                <li>Acceso a App Streaming</li>
+                                <li>2 Decodificadores HD</li>
+                                <li>Canales de Deportes en HD</li>
+                            </ul>
+                            <a href="#contacto" class="btn-cta" style="width: 100%;">Lo quiero</a>
+                        </div>
+
+                    </div>
+                </div>
+                <button class="carousel-btn next" onclick="moveCarousel(1)">&#10095;</button>
+            </div>
+
+            <!-- Indicadores (Puntos) -->
+            <div class="carousel-dots" id="carouselDots"></div>
+        </div>
+    </section>
+
+    <!-- Nosotros -->
+    <section id="nosotros">
+        <div class="container">
+            <h2 class="section-title">¿Por qué elegirnos?</h2>
+            <div class="nosotros-grid">
+                <div class="feature-box">
+                <div class="feature-icon">
+                   <img src="./assets/fibra.jpg" alt="Fibra Óptica">
+                   </div>
+                    <h3>Fibra Óptica Pura</h3>
+                    <p>Llevamos la conexión directamente hasta tu hogar para garantizar 100% de la velocidad contratada.</p>
+                </div>
+                <div class="feature-box">
+                <div class="feature-icon">
+                   <img src="./assets/soporte.jpg" alt="Fibra Óptica">
+                   </div>
+                    <h3>Soporte 24/7</h3>
+                    <p>Nuestro equipo de expertos está disponible a cualquier hora y todos los días para resolver tus dudas.</p>
+                </div>
+                <div class="feature-box">
+                    <div class="feature-icon">
+                   <img src="./assets/instalacion.jpg" alt="Fibra Óptica">
+                   </div>
+                    <h3>Instalación Rápida</h3>
+                    <p>En menos de 24 horas tendrás tus servicios activos y funcionando al máximo rendimiento.</p>
+                </div>
+            </div>
+            <p class="coverage-notice">📍 Consulta nuestra amplia red de cobertura en toda la zona metropolitana y alrededores.</p>
+        </div>
+    </section>
+
+    <!-- Contáctanos -->
+    <section id="contacto" class="bg-light">
+        <div class="container">
+            <h2 class="section-title">Contáctanos</h2>
+            <div class="contacto-wrapper">
+                <form action="#" method="POST">
+                    <div class="form-group">
+                        <label for="nombre">Nombre Completo</label>
+                        <input type="text" id="nombre" name="nombre" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="telefono">Teléfono</label>
+                        <input type="tel" id="telefono" name="telefono" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Correo Electrónico</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="servicio">Servicio de Interés</label>
+                        <select id="servicio" name="servicio">
+                            <option value="internet">Solo Internet</option>
+                            <option value="cable">Solo Cable</option>
+                            <option value="duo">Paquete Dúo</option>
+                            <option value="soporte">Soporte Técnico</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="mensaje">Mensaje</label>
+                        <textarea id="mensaje" name="mensaje" rows="4" required></textarea>
+                    </div>
+                    <button type="submit" class="btn-cta btn-submit">Enviar Solicitud</button>
+                </form>
+                
+                <div class="contacto-info">
+                    <h3>Información Directa</h3>
+                    <p>📞 Ventas: 935418766</p>
+                    <p>📞 Soporte: 918773320</p>
+                    <p>✉️ CASTELTVLAJOYA@gmail.com</p>
+                    <br>
+                    <h3>Horarios de Atención</h3>
+                    <p><strong>Lunes a Viernes:</strong> 8:00 AM - 5:30 PM</p>
+                    <p><strong>Sábados y Domingos:</strong> 9:00 AM - 12:00 PM</p>
+                    <p><em>*Soporte técnico disponible 24/7 vía telefónica.</em></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h4>ConectaPlus</h4>
+                <p>Tu proveedor líder en entretenimiento y alta velocidad.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Enlaces Rápidos</h4>
+                <ul>
+                    <li><a href="#inicio">Inicio</a></li>
+                    <li><a href="#planes">Nuestros Planes</a></li>
+                    <li><a href="#nosotros">Sobre Nosotros</a></li>
+                    <li><a href="#contacto">Atención al Cliente</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Legal</h4>
+                <ul>
+                    <li><a href="#">Términos de Servicio</a></li>
+                    <li><a href="#">Políticas de Privacidad</a></li>
+                    <li><a href="#">Contrato de Servicios</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2026 CASTEL TV. Todos los derechos reservados.
+        </div>
+    </footer>
+
+    <!-- WhatsApp Flotante -->
+    <a href="https://wa.me/+51918772320" target="_blank" class="fab-whatsapp" aria-label="Contactar por WhatsApp">
+        <svg viewBox="0 0 24 24">
+            <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.711.92 2.8.92 3.18 0 5.766-2.585 5.768-5.766 0-3.181-2.587-5.762-5.767-5.762zm3.33 8.354c-.161.453-.941.87-1.303.906-.339.034-.737.126-2.395-.53-2.028-.8-3.327-2.884-3.428-3.02-.102-.135-.818-1.092-.818-2.083 0-.992.518-1.478.706-1.685.187-.208.406-.26.541-.26.136 0 .27.001.391.006.125.006.292-.047.456.347.167.402.572 1.397.625 1.503.052.106.088.23.02.366-.067.135-.104.218-.239.364-.135.147-.285.32-.406.443-.131.133-.271.28-.119.542.152.261.677 1.118 1.455 1.81.999.89 1.839 1.161 2.094 1.294.255.132.404.114.557-.06.152-.176.657-.768.834-1.033.176-.264.352-.22.585-.132.234.088 1.476.696 1.73.824.253.127.422.189.484.294.062.105.062.607-.099 1.06zM12.031 2C6.496 2 2 6.496 2 12.031c0 1.767.458 3.429 1.272 4.887l-1.745 6.386 6.516-1.71c1.424.764 3.033 1.173 4.717 1.173 5.534 0 10.031-4.496 10.031-10.031S17.565 2 12.031 2zm0 18.595c-1.453 0-2.834-.374-4.065-1.03l-.291-.155-3.021.793.805-2.946-.17-.272c-.714-1.144-1.092-2.47-1.092-3.856 0-4.444 3.617-8.061 8.062-8.061 4.445 0 8.062 3.617 8.062 8.061s-3.617 8.061-8.062 8.061z"/>
+        </svg>
+    </a>
+
+    <script>
+        // Funcionalidad Menú Hamburguesa
+        function toggleMenu() {
+            const navLeft = document.getElementById('nav-left');
+            const navRight = document.getElementById('nav-right');
+            navLeft.classList.toggle('active');
+            navRight.classList.toggle('active');
+        }
+
+        // --- LÓGICA DEL CARRUSEL Y FILTRADO ---
+        let currentIndex = 0;
+        let visibleCards = [];
+
+        function updateVisibleCards() {
+            const allCards = Array.from(document.querySelectorAll('.plan-card'));
+            visibleCards = allCards.filter(card => card.style.display !== 'none');
+        }
+
+        function getCardsPerPage() {
+            if (window.innerWidth <= 768) return 1;
+            if (window.innerWidth <= 992) return 2;
+            return 3;
+        }
+
+        function updateCarouselPosition() {
+            const track = document.getElementById('planesTrack');
+            const cardsPerPage = getCardsPerPage();
+            
+            // Asegurar límites del índice
+            const maxIndex = Math.max(0, visibleCards.length - cardsPerPage);
+            if (currentIndex > maxIndex) currentIndex = maxIndex;
+            if (currentIndex < 0) currentIndex = 0;
+
+            // Calcular el desplazamiento
+            let offset = 0;
+            if (visibleCards.length > 0 && visibleCards[currentIndex]) {
+                const cardWidth = visibleCards[0].offsetWidth;
+                const gap = 30; // Correspondiente al gap de CSS
+                offset = currentIndex * (cardWidth + gap);
+            }
+
+            track.style.transform = `translateX(-${offset}px)`;
+            createDots();
+        }
+
+        function moveCarousel(direction) {
+            const cardsPerPage = getCardsPerPage();
+            const maxIndex = Math.max(0, visibleCards.length - cardsPerPage);
+            
+            currentIndex += direction;
+            if (currentIndex > maxIndex) currentIndex = 0; // Bucle al inicio
+            if (currentIndex < 0) currentIndex = maxIndex; // Bucle al final
+
+            updateCarouselPosition();
+            
+            
+           
+        }
+       
+        
+    
+
+        function createDots() {
+            const dotsContainer = document.getElementById('carouselDots');
+            dotsContainer.innerHTML = '';
+            
+            const cardsPerPage = getCardsPerPage();
+            const totalPages = Math.max(1, visibleCards.length - cardsPerPage + 1);
+
+            for (let i = 0; i < totalPages; i++) {
+                const dot = document.createElement('div');
+                dot.classList.add('dot');
+                if (i === currentIndex) dot.classList.add('active');
+                dot.onclick = () => {
+                    currentIndex = i;
+                    updateCarouselPosition();
+                };
+                dotsContainer.appendChild(dot);
+            }
+        }
+
+        // Filtro de Planes
+        function filterPlans(category) {
+            // Actualizar estado activo de botones
+            const buttons = document.querySelectorAll('.planes-toggle button');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            // Filtrar tarjetas
+            const cards = document.querySelectorAll('.plan-card');
+            cards.forEach(card => {
+                if (category === 'all' || card.getAttribute('data-category') === category) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            // Reiniciar carrusel al filtrar
+            currentIndex = 0;
+            updateVisibleCards();
+            updateCarouselPosition();
+        }
+
+        // Ajustar al redimensionar la ventana
+        window.addEventListener('resize', () => {
+            updateVisibleCards();
+            updateCarouselPosition();
+        });
+
+        // Inicializar el carrusel al cargar la página
+        document.addEventListener('DOMContentLoaded', () => {
+            updateVisibleCards();
+            updateCarouselPosition();
+        });
+    </script>
+</body>
+</html>
